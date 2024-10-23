@@ -959,6 +959,19 @@
 			The number of frames per second to record in the video when writing a movie. Simulation speed will adjust to always match the specified framerate, which means the engine will appear to run slower at higher [member editor/movie_writer/fps] values. Certain FPS values will require you to adjust [member editor/movie_writer/mix_rate] to prevent audio from desynchronizing over time.
 			This can be specified manually on the command line using the [code]--fixed-fps &lt;fps&gt;[/code] [url=$DOCS_URL/tutorials/editor/command_line_tutorial.html]command line argument[/url].
 		</member>
+		<member name="editor/movie_writer/export_audio" type="bool" setter="" getter="" default="true">
+			If [code]true[/code], audio stream will be part of the movie export. If [code]false[/code], audio will be excluded from export.
+		</member>
+		<member name="editor/movie_writer/enable_transparency" type="bool" setter="" getter="" default="true">
+			If [code]true[/code], transparency will be enabled by default. If [code]false[/code], audio will be excluded from export.
+			[b]Note:[/b] Transparency currently only works for PNG-sequences, not for MJPEG.
+		</member>
+		<member name="editor/movie_writer/first_frame" type="int" setter="" getter="" default="0">
+			The first frame to write.
+		</member>
+		<member name="editor/movie_writer/last_frame" type="bool" setter="" getter="" default="0">
+			The last frame to write, if set to 0, last written frame will follow the application lifetime.
+		</member>
 		<member name="editor/movie_writer/mix_rate" type="int" setter="" getter="" default="48000">
 			The audio mix rate to use in the recorded audio when writing a movie (in Hz). This can be different from [member audio/driver/mix_rate], but this value must be divisible by [member editor/movie_writer/fps] to prevent audio from desynchronizing over time.
 		</member>

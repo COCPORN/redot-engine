@@ -38,6 +38,7 @@
 class MovieWriterMJPEG : public MovieWriter {
 	GDCLASS(MovieWriterMJPEG, MovieWriter)
 
+	bool export_audio = true;
 	uint32_t mix_rate = 48000;
 	AudioServer::SpeakerMode speaker_mode = AudioServer::SPEAKER_MODE_STEREO;
 	String base_path;

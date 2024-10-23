@@ -97,6 +97,13 @@ void MovieWriter::get_supported_extensions(List<String> *r_extensions) const {
 
 void MovieWriter::begin(const Size2i &p_movie_size, uint32_t p_fps, const String &p_base_path) {
 	project_name = GLOBAL_GET("application/config/name");
+	enable_transparency = GLOBAL_GET("editor/movie_writer/enable_transparency");
+
+	if (enable_transparency) {
+		WARN_PRINT("Render is set to be transparent");
+	} else {
+		WARN_PRINT("Render is not set to be transparent");
+	}
 
 	print_line(vformat("Movie Maker mode enabled, recording movie at %d FPS...", p_fps));
 
@@ -144,9 +151,14 @@ void MovieWriter::_bind_methods() {
 	GLOBAL_DEF(PropertyInfo(Variant::INT, "editor/movie_writer/mix_rate", PROPERTY_HINT_RANGE, "8000,192000,1,suffix:Hz"), 48000);
 	GLOBAL_DEF(PropertyInfo(Variant::INT, "editor/movie_writer/speaker_mode", PROPERTY_HINT_ENUM, "Stereo,3.1,5.1,7.1"), 0);
 	GLOBAL_DEF(PropertyInfo(Variant::FLOAT, "editor/movie_writer/mjpeg_quality", PROPERTY_HINT_RANGE, "0.01,1.0,0.01"), 0.75);
+
 	// Used by the editor.
 	GLOBAL_DEF_BASIC("editor/movie_writer/movie_file", "");
 	GLOBAL_DEF_BASIC("editor/movie_writer/disable_vsync", false);
+	GLOBAL_DEF_BASIC("editor/movie_writer/export_audio", true);
+	GLOBAL_DEF_BASIC("editor/movie_writer/enable_transparency", true);
+	GLOBAL_DEF_BASIC("editor/movie_writer/first_frame", 0);
+	GLOBAL_DEF_BASIC("editor/movie_writer/last_frame", 0);
 	GLOBAL_DEF_BASIC(PropertyInfo(Variant::INT, "editor/movie_writer/fps", PROPERTY_HINT_RANGE, "1,300,1,suffix:FPS"), 60);
 }
 
@@ -185,6 +197,11 @@ void MovieWriter::add_frame() {
 #endif
 
 	RID main_vp_rid = RenderingServer::get_singleton()->viewport_find_from_screen_attachment(DisplayServer::MAIN_WINDOW_ID);
+
+	if (enable_transparency) {
+		RenderingServer::get_singleton()->viewport_set_transparent_background(main_vp_rid, true);
+	}
+
 	RID main_vp_texture = RenderingServer::get_singleton()->viewport_get_texture(main_vp_rid);
 	Ref<Image> vp_tex = RenderingServer::get_singleton()->texture_2d_get(main_vp_texture);
 	if (RenderingServer::get_singleton()->viewport_is_using_hdr_2d(main_vp_rid)) {

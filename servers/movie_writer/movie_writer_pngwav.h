@@ -42,6 +42,7 @@ class MovieWriterPNGWAV : public MovieWriter {
 		MAX_TRAILING_ZEROS = 8 // more than 10 days at 60fps, no hard drive can put up with this anyway :)
 	};
 
+	bool export_audio = true;
 	uint32_t mix_rate = 48000;
 	AudioServer::SpeakerMode speaker_mode = AudioServer::SPEAKER_MODE_STEREO;
 	String base_path;
@@ -55,6 +56,7 @@ class MovieWriterPNGWAV : public MovieWriter {
 
 	String zeros_str(uint32_t p_index);
 
+	Error remove_existing_files(const String &p_base_path);
 protected:
 	virtual uint32_t get_audio_mix_rate() const override;
 	virtual AudioServer::SpeakerMode get_audio_speaker_mode() const override;
